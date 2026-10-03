@@ -28,9 +28,43 @@
           "$other": {
             ".validate": false
           }
+        },
+        "reviewInbox": {
+          "$id": {
+            "$other": {
+              ".validate": false
+            },
+            ".write": "!data.exists() && newData.exists()",
+            "text": {
+              ".validate": "newData.isString() && newData.val().length >= 5 && newData.val().length <= 1000"
+            },
+            "createdAt": {
+              ".validate": "newData.isNumber() && newData.val() === now"
+            },
+            ".validate": "newData.hasChildren(['text','createdAt'])"
+          },
+          ".read": "auth != null && root.child('admins').child(auth.uid).val() === true"
+        },
+        "publicReviews": {
+          ".indexOn": [
+            "createdAt"
+          ],
+          ".read": true,
+          "$id": {
+            "$other": {
+              ".validate": false
+            },
+            ".write": "auth != null && root.child('admins').child(auth.uid).val() === true",
+            "text": {
+              ".validate": "newData.isString() && newData.val().length >= 5 && newData.val().length <= 1000"
+            },
+            "createdAt": {
+              ".validate": "newData.isNumber()"
+            },
+            ".validate": "newData.hasChildren(['text','createdAt'])"
+          }
         }
       }
     }
   }
 }
-
