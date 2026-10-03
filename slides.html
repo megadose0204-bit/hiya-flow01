@@ -6,7 +6,7 @@
      접두사가 겹치면 다른 강의 사이트와 저장값이 섞임
   2) <title>, description, 표지·마침 슬라이드의 [ ] 자리
   3) 슬라이드 추가·삭제 시 aria-label 번호와 주석 번호 함께 재정렬 (AGENTS.md 참고)
-  외부 파일 없음 · 백엔드 없음 · 이 파일 하나로 동작
+  Firebase 청중 동기화 · 개별 열람은 ?view
 -->
 <html lang="ko">
 <head>
@@ -367,7 +367,7 @@ table.tbl td:first-child{color:var(--sub)}
   <span id="counter" aria-live="polite">1 / 36</span>
   <button type="button" id="navNext" aria-label="다음 슬라이드">▶</button>
   <span class="grow"></span>
-  <span class="hint hide-sm">← → 이동 · G 전체보기 · P PDF</span>
+  <button type="button" id="syncBtn" aria-haspopup="dialog">동기화 연결</button>
   <button type="button" id="gridBtn" aria-haspopup="dialog" aria-controls="gridOverlay">▦ 전체 보기</button>
   <button type="button" id="printBtn" class="hide-sm">⎙ PDF 저장</button>
 </nav>
@@ -377,6 +377,21 @@ table.tbl td:first-child{color:var(--sub)}
   <div class="grid-list" id="gridList"></div>
 </div>
 
+<dialog id="syncDialog" aria-labelledby="syncHeading" style="margin:auto;padding:24px;border:0;border-radius:16px;width:min(420px,calc(100vw - 32px));font-size:16px">
+  <h2 id="syncHeading" style="font-size:24px">청중 동기화</h2>
+  <p id="syncStatus" role="status" style="margin:16px 0">연결 준비</p>
+  <form id="syncLogin">
+    <label for="syncEmail">강사 이메일</label><input id="syncEmail" type="email" autocomplete="username" required style="display:block;width:100%;min-height:44px;margin:8px 0 16px">
+    <label for="syncPassword">강사 비밀번호</label><input id="syncPassword" type="password" autocomplete="current-password" required style="display:block;width:100%;min-height:44px;margin:8px 0 16px">
+    <button type="submit">강사 로그인</button>
+  </form>
+  <div id="syncAdmin" hidden><button id="syncLock" type="button">청중 동기화 ON</button><button id="syncLogout" type="button">로그아웃</button></div>
+  <p style="margin:16px 0"><a href="slides.html?view">개별 열람 입장</a></p>
+  <button id="syncClose" type="button">닫기</button>
+</dialog>
+<style>#syncDialog button{min-height:44px;min-width:44px;padding:10px 16px;border:0;border-radius:8px;background:#111;color:white;margin:4px}#syncDialog::backdrop{background:rgba(0,0,0,.65)}@media print{#syncDialog{display:none!important}}</style>
+<style>@media(max-width:760px){#nav{padding:0 4px;gap:4px}#nav button{padding:0 6px}#nav .grow{display:none}#counter{min-width:4em}#syncBtn{flex:1;min-width:0!important;font-size:12px!important}#gridBtn{font-size:0!important;padding:0!important}#gridBtn::before{content:'▦';font-size:20px}}</style>
+<script src="firebase/firebase-config.js"></script>
 <script>
 (function(){
   /* ▼ 내 강의 고유 접두사로 변경 (예: 'ai0927_') */
@@ -387,6 +402,8 @@ table.tbl td:first-child{color:var(--sub)}
   var total = slides.length;
   var STORAGE_KEY = LS + 'slide';
   var idx = 0;
+  var remoteChange = false;
+  window.lectureDeck = { canNavigate: function(){return new URLSearchParams(location.search).has('view');}, onNavigate: function(){}, showRemote: function(n){ remoteChange=true;show(n);remoteChange=false; }, refresh: function(){remoteChange=true;show(idx);remoteChange=false;}, current: function(){return idx;} };
 
   function lsGet(k){ try { return localStorage.getItem(k); } catch (e) { return null; } }
   function lsSet(k, v){ try { localStorage.setItem(k, v); } catch (e) { /* 저장 불가 환경 · 무시 */ } }
@@ -411,6 +428,7 @@ table.tbl td:first-child{color:var(--sub)}
   var lastFocus = null;
 
   function show(i){
+    if (!remoteChange && !window.lectureDeck.canNavigate()) return;
     idx = Math.max(0, Math.min(total - 1, i));
     slides.forEach(function(s, n){
       s.classList.toggle('active', n === idx);
@@ -418,10 +436,11 @@ table.tbl td:first-child{color:var(--sub)}
     });
     progressEl.style.width = ((idx + 1) / total * 100) + '%';
     counterEl.textContent = (idx + 1) + ' / ' + total;
-    navPrev.disabled = idx === 0;
-    navNext.disabled = idx === total - 1;
+    navPrev.disabled = idx === 0 || !window.lectureDeck.canNavigate();
+    navNext.disabled = idx === total - 1 || !window.lectureDeck.canNavigate();
     minis.forEach(function(m, n){ m.classList.toggle('current', n === idx); });
     lsSet(STORAGE_KEY, String(idx));
+    if (!remoteChange) window.lectureDeck.onNavigate(idx);
   }
 
   function scaleMinis(){
@@ -586,9 +605,10 @@ table.tbl td:first-child{color:var(--sub)}
     gridList.appendChild(mini);
     minis.push(mini);
   });
-  show(idx);
+  window.lectureDeck.showRemote(idx);
 })();
 </script>
+<script type="module" src="firebase/sync-ui.js"></script>
 </body>
 </html>
 

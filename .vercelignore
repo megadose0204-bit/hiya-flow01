@@ -1,7 +1,9 @@
 stats.php
-firebase/
+firebase/slides-firebase.html
+firebase/database.rules.json
 AGENTS.md
 CLAUDE.md
 .git/
 README.md
+sync-qa.cjs
 
