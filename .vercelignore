@@ -6,4 +6,5 @@ CLAUDE.md
 .git/
 README.md
 sync-qa.cjs
+sync-behavior-qa.cjs
 

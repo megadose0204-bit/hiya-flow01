@@ -16,9 +16,7 @@ import {
 const DEFAULT_STATE = { slide: 0, locked: true, pdf: true };
 
 /* firebase-config.js 를 아직 채우지 않았으면 false - 이때 덱은 자유 열람으로 동작 */
-export function isConfigured(cfg) {
-  return !!(cfg && typeof cfg.apiKey === 'string' && cfg.apiKey && !cfg.apiKey.includes('[') && cfg.databaseURL);
-}
+export { isConfigured } from './config-check.js';
 
 export function createSync(cfg, deckId) {
   const app = initializeApp(cfg);
@@ -35,11 +33,13 @@ export function createSync(cfg, deckId) {
   onAuthStateChanged(auth, async (u) => {
     user = u; isAdmin = false;
     if (u) {
-      try { isAdmin = (await get(ref(db, 'admins/' + u.uid))).val() === true; } catch (e) { isAdmin = false; }
-      if (isAdmin) {
-        const cur = await get(stateRef);
-        if (!cur.exists()) await set(stateRef, { ...DEFAULT_STATE, updatedAt: serverTimestamp() });
-      }
+      try {
+        isAdmin = (await get(ref(db, 'admins/' + u.uid))).val() === true;
+        if (isAdmin) {
+          const cur = await get(stateRef);
+          if (!cur.exists()) await set(stateRef, { ...DEFAULT_STATE, updatedAt: serverTimestamp() });
+        }
+      } catch (e) { isAdmin = false; }
     }
     adminListeners.forEach((cb) => cb(isAdmin, user));
   });
