@@ -113,17 +113,31 @@ footer nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 .3
 .wrap > *, .card, .profile > div, .pitem{min-width:0}
 @media (max-width:420px){table.tbl th,table.tbl td{padding:.7rem .6rem}table.tbl tbody th{width:4.5rem}.hero{padding:3rem 0}.btn{padding:0 1rem}.meta span{padding:.35rem .7rem}}
 @media (prefers-reduced-motion:reduce){ .entry{transition:none} .entry:hover{transform:none} }
+/* 요청 디자인: 뉴브루탈리즘 × 맥시멀리즘 */
+:root{--bg:#f7f3e8;--paper:#fffdf7;--ink:#171717;--sub:#454545;--accent:#dfff00;--shadow:6px 6px 0 #171717;--shadow-hover:9px 9px 0 #171717}
+body{background-image:radial-gradient(#17171722 1px,transparent 1px);background-size:22px 22px}
+.wrap{max-width:68rem}section{padding:3.5rem 0}h2{font-size:clamp(1.7rem,4vw,2.5rem)}
+.brandbar{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 24px;background:#171717;color:#fffdf7;font-weight:900;border-bottom:3px solid #171717}.brandbar a{min-height:44px;display:inline-flex;align-items:center;text-decoration:none}.brandbar .brandmark{font-size:24px;letter-spacing:-1px}.brandbar .brandtag{font-size:14px}
+.hero{position:relative;isolation:isolate;overflow:hidden;background:#b6a2ff;border-bottom:3px solid #171717;padding:5rem 0 4rem;text-align:left}.hero .wrap{position:relative;z-index:1}.hero .kicker{display:inline-block;background:#fffdf7;border:3px solid #171717;padding:10px 16px;letter-spacing:0;box-shadow:4px 4px 0 #171717;transform:rotate(-2deg)}
+.hero h1{font-size:clamp(2.65rem,7.4vw,6.5rem);line-height:1.09;letter-spacing:-.055em;margin:30px 0 24px;font-weight:950;max-width:100%;text-wrap:balance}.hero h1::after{display:none}.kinetic-word{display:inline-block;will-change:transform;transform:translate(var(--tx,0px),var(--ty,0px)) rotate(var(--tilt,0deg));transition:transform .22s ease,color .22s ease}.kinetic-word:first-child{background:#dfff00;padding:0 .12em;box-shadow:5px 5px 0 #171717}.kinetic-word:hover{color:#fffdf7;text-shadow:2px 2px 0 #171717}.hero .lead{font-size:clamp(1.05rem,2vw,1.35rem);color:#171717}.meta,.cta{justify-content:flex-start}.meta span{background:#fffdf7;border:2px solid #171717;border-radius:0}.btn{border:3px solid #171717;border-radius:0;box-shadow:5px 5px 0 #171717;transition:transform .15s,box-shadow .15s;min-height:52px}.btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 #171717}.btn.primary{background:#171717;color:#dfff00}.btn.ghost{background:#fffdf7}
+.hero-decoration{position:absolute;right:4%;top:12%;font-size:clamp(100px,20vw,240px);font-weight:900;line-height:1;opacity:.18;z-index:0;transform:rotate(14deg);pointer-events:none}.hero-sticker{display:inline-block;margin-top:28px;background:#ff7855;border:3px solid #171717;border-radius:50%;padding:18px 30px;font-size:19px;font-weight:900;transform:rotate(4deg);box-shadow:5px 5px 0 #171717}.marquee-strip{overflow:hidden;border-bottom:3px solid #171717;background:#dfff00;padding:14px 0;white-space:nowrap;font-size:22px;font-weight:950}.marquee-track{display:inline-block;animation:bannerMove 24s linear infinite}.marquee-track span{padding-right:32px}@keyframes bannerMove{to{transform:translateX(-50%)}}
+.sec-kicker{display:inline-block;background:#171717;color:#dfff00;letter-spacing:.08em;padding:4px 10px;margin-bottom:12px}.card,.profile,.entry,.pitem,table.tbl{border:3px solid #171717;border-radius:0;box-shadow:var(--shadow)}.card{padding:1.6rem}.card:nth-child(2){background:#ffd4ed}.card .n{font-size:14px;color:#171717}.card .t{font-size:1.45rem}.card ul{font-size:1.05rem;color:#171717;gap:10px}.entry:first-child{background:#dfff00}.entry:nth-child(2){background:#b6a2ff}.entry .title{font-size:1.3rem}.entry .desc{color:#171717}.profile .avatar{background:#ff7855;border:3px solid #171717;box-shadow:4px 4px 0 #171717}.profile li{font-size:1rem}.pitem .pt{font-size:1.15rem}.pitem .px{border-radius:0;border:2px solid #171717}.pbtn{border:2px solid #171717;border-radius:0;box-shadow:3px 3px 0 #171717}.pitem:nth-child(even){background:#e7ffb0}#instructor{background:#dfff00;border-block:3px solid #171717}#enter{background:#ff7855;border-block:3px solid #171717}footer{background:#171717;color:#fffdf7}.pnote{color:#454545}
+@media(max-width:640px){.brandbar{padding:12px 18px}.brandbar .brandtag{display:none}.hero{padding:3rem 0}.hero .kicker{font-size:14px}.hero h1{line-height:1.18;letter-spacing:-.04em}.hero-decoration{right:-20px;top:30%}.hero-sticker{font-size:16px;padding:14px 22px}.wrap{padding:0 18px}.hero .meta span{font-size:13px}.card,.profile,.entry,.pitem{padding:18px}.btn{font-size:15px;padding:0 14px}.brandbar a{font-size:14px}}
+@media(prefers-reduced-motion:reduce){.marquee-track{animation:none}.kinetic-word,.btn{transition:none}.kinetic-word{transform:none!important}.btn:hover{transform:none}}
 </style>
 </head>
 <body>
 <a class="skip" href="#main">본문 바로가기</a>
+<nav class="brandbar" aria-label="주요 메뉴"><a class="brandmark" href="#">FLOW / AI LAB</a><a href="#curriculum">커리큘럼 ↗</a><span class="brandtag">상상에서 첫 광고까지</span></nav>
 <header class="hero"><div class="wrap">
 <div class="kicker">이은희 강사 · 따라 하는 AI 실습</div>
-<h1>FLOW AI 캐릭터 및 영상만들기</h1>
+<h1 id="kineticTitle" aria-label="FLOW AI 캐릭터 및 영상만들기"><span class="kinetic-word" aria-hidden="true">FLOW AI</span> <span class="kinetic-word" aria-hidden="true">캐릭터 및</span> <span class="kinetic-word" aria-hidden="true">영상만들기</span></h1>
 <p class="lead">40~60대 중장년 대상 · 나만의 캐릭터에서 짧은 광고영상까지</p>
 <div class="meta"><span>2026년 10월 19일 · 오후 2시~4시</span><span>천안 공유오피스 드림캐쳐</span><span>50분씩 2회</span><span>강사 이은희</span></div>
 <div class="cta"><a class="btn primary" href="slides.html" target="_blank" rel="noopener">슬라이드 입장 →</a><a class="btn ghost" href="#curriculum">커리큘럼 보기</a></div>
-</div></header>
+<div class="hero-sticker">내 캐릭터의 첫 광고 ↗</div>
+</div><div class="hero-decoration" aria-hidden="true">✳</div></header>
+<div class="marquee-strip" aria-hidden="true"><div class="marquee-track"><span>상상 → 캐릭터 → 첫 광고 ✳ 이미지 1장 + 광고영상 1편 ✳</span><span>상상 → 캐릭터 → 첫 광고 ✳ 이미지 1장 + 광고영상 1편 ✳</span></div></div>
 <main id="main">
 <section id="info" aria-labelledby="infoTitle"><div class="wrap"><div class="sec-kicker">대상 · 일정</div><h2 id="infoTitle">수업 안내</h2>
 <table class="tbl"><tbody>
@@ -252,6 +266,10 @@ footer nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 .3
     download('실습프롬프트_' + PROMPTS.length + '종.txt', out);
   });
 })();
+</script>
+<script>
+/* 제목 인터랙션: 포인터 위치에 따라 단어별 이동, 터치·동작 줄이기 환경은 정적 표시 */
+(function(){var title=document.getElementById('kineticTitle');var words=title.querySelectorAll('.kinetic-word');var reduced=window.matchMedia('(prefers-reduced-motion: reduce)');function reset(){words.forEach(function(w){w.style.removeProperty('--tx');w.style.removeProperty('--ty');w.style.removeProperty('--tilt');});}title.addEventListener('pointermove',function(e){if(reduced.matches||e.pointerType==='touch')return;var r=title.getBoundingClientRect();var x=(e.clientX-r.left)/r.width-.5;var y=(e.clientY-r.top)/r.height-.5;words.forEach(function(w,i){var direction=i%2?1:-1;w.style.setProperty('--tx',x*10*direction+'px');w.style.setProperty('--ty',y*12+'px');w.style.setProperty('--tilt',x*3*direction+'deg');});});title.addEventListener('pointerleave',reset);reduced.addEventListener('change',reset);})();
 </script>
 </body>
 </html>
