@@ -48,12 +48,13 @@ async function start() {
   sync.onState(state => {
     if (!state) {ready=false;failed('동기화 읽기 실패 · Firebase 규칙 확인 필요');return;}
     ready=true;locked=!!state.locked;pdf=!!state.pdf;stateSlide=state.slide;
-    if (!admin && (locked || teacher)) deck.showRemote(stateSlide);
+    if (!teacher && !admin && locked) deck.showRemote(stateSlide);
+    document.getElementById('syncResume').textContent='저장 위치 이어서 진행 · '+(stateSlide+1)+'장';
     render();
   });
   sync.onAdmin((value,user) => {
     admin=value && teacher;
-    if (admin) {error='';deck.showRemote(stateSlide);if(dialog.open) dialog.close();}
+    if (admin) {error='';if(dialog.open) dialog.close();}
     else if (teacher && user) error='강사 목록(admins)에 없는 계정 · UID 등록 확인';
     render();
   });
@@ -66,6 +67,11 @@ async function start() {
   });
   lockButton.addEventListener('click', () => sync.setLock(!locked).catch(() => failed('잠금 전송 실패 · 연결 확인')));
   pdfButton.addEventListener('click', () => sync.setPdf(!pdf).catch(() => failed('PDF 설정 전송 실패 · 연결 확인')));
+  document.getElementById('syncStart').addEventListener('click', async () => {
+    try {await sync.setSlide(0);deck.showRemote(0);error='';render();dialog.close();}
+    catch {failed('수업 시작 전송 실패 · 연결 확인');}
+  });
+  document.getElementById('syncResume').addEventListener('click', () => {deck.showRemote(stateSlide);dialog.close();});
   document.getElementById('syncLogout').addEventListener('click', () => sync.logout().catch(() => failed('로그아웃 실패 · 다시 시도')));
 }
 render();

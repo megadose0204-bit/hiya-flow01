@@ -173,6 +173,22 @@ table.tbl td:first-child{color:var(--sub)}
   #stage > .slide:last-child{break-after:auto;page-break-after:auto}
 }
 </style>
+<style>
+/* 참고 강좌 디자인: 무대와 내용 유지 */
+:root{--ink:#0A0A0A;--slide-bg:#FFF6E4;--card:#fff;--accent:#F7931E;--line:#0A0A0A;--shadow:.4cqi .4cqi 0 #0A0A0A;--shadow-lg:.55cqi .55cqi 0 #0A0A0A}
+.slide{background:#FFF6E4 radial-gradient(rgba(10,10,10,.13) .09cqi,transparent .1cqi) 0 0/1.4cqi 1.4cqi}
+.kicker{align-self:flex-start;width:fit-content;background:#00589A;color:#fff;border:.23cqi solid #0A0A0A;box-shadow:.25cqi .25cqi 0 #0A0A0A;padding:.35cqi .85cqi;letter-spacing:.04em;transform:rotate(-1deg)}.kicker::before{display:none}
+h2{color:#00589A;width:fit-content;background:linear-gradient(transparent 70%,#F3BC27 70%);padding:0 .2cqi}
+.card{border:.23cqi solid #0A0A0A;border-radius:0;box-shadow:var(--shadow)}.card.bad{border:.2cqi dashed #0A0A0A}.card.good{border-left:.7cqi solid #00589A}.card .n{color:#00589A}.card .t{color:#0A0A0A}
+.bullets li{border:.23cqi solid #0A0A0A;border-radius:0;box-shadow:var(--shadow)}.bullets li::before{background:#00589A}
+table.tbl{border:.23cqi solid #0A0A0A;border-radius:0;box-shadow:var(--shadow)}table.tbl th{background:#00589A}
+.prompt-card{background:#fff;border:.23cqi solid #0A0A0A;border-radius:0;box-shadow:var(--shadow);color:#0A0A0A}.prompt-card .label{color:#3A3A3A}.prompt-card blockquote{background:#FFF6E4;color:#0A0A0A;border-left:.5cqi solid #F7931E;padding:.4cqi 1cqi}.copy-btn{background:#00589A;color:#fff;border:.2cqi solid #0A0A0A;border-radius:0;box-shadow:.2cqi .2cqi 0 #0A0A0A}.copy-btn:hover,.copy-btn.copied{background:#004b83}
+.title-slide .kicker{background:#00589A;color:#fff;align-self:center}.title-slide h1{width:fit-content;background:#F7931E;color:#0A0A0A;border:.25cqi solid #0A0A0A;box-shadow:.4cqi .4cqi 0 #0A0A0A;padding:.3cqi .8cqi;transform:rotate(-1deg)}.title-slide h1::after{display:none}.title-slide .lede{color:#0A0A0A}.meta-row span{background:#F3BC27;border:.23cqi solid #0A0A0A;box-shadow:.2cqi .2cqi 0 #0A0A0A}.meta-row span:nth-child(2){background:#6759A5;color:#fff}.meta-row span:nth-child(3){background:#F7931E}
+.slide.dark{background:#0A0A0A;color:#fff}.slide.dark h2{color:#fff;background:none}.slide.dark .kicker{background:#F3BC27;color:#0A0A0A;border-color:#fff}.timer-chip{border-radius:0;box-shadow:.25cqi .25cqi 0 #0A0A0A}
+#nav{background:#FFF6E4;border-top:3px solid #0A0A0A;color:#0A0A0A}#nav button,#nav a{border:2px solid #0A0A0A;border-radius:0;background:#00589A;color:#fff;box-shadow:2px 2px 0 #0A0A0A}#nav button:hover,#nav a:hover{background:#004b83}#nav #syncBtn{background:#6759A5}#nav :focus-visible{outline-color:#0A0A0A}#progress{background:#F7931E}
+@media(prefers-reduced-motion:reduce){.kicker,.title-slide h1{transform:none}}
+@media(max-width:360px){.slide{padding-block:3cqi}}
+</style>
 </head>
 <body>
 
@@ -385,7 +401,7 @@ table.tbl td:first-child{color:var(--sub)}
     <label for="syncPassword">강사 비밀번호</label><input id="syncPassword" type="password" autocomplete="current-password" required style="display:block;width:100%;min-height:44px;margin:8px 0 16px">
     <button type="submit">강사 로그인</button>
   </form>
-  <div id="syncAdmin" hidden><button id="syncLock" type="button" aria-pressed="true">청중 잠금 ON</button><button id="syncPdf" type="button" aria-pressed="true">PDF 허용 ON</button><button id="syncLogout" type="button">로그아웃</button></div>
+  <div id="syncAdmin" hidden><button id="syncStart" type="button">표지부터 수업 시작</button><button id="syncResume" type="button">저장 위치 이어서 진행</button><button id="syncLock" type="button" aria-pressed="true">청중 잠금 ON</button><button id="syncPdf" type="button" aria-pressed="true">PDF 허용 ON</button><button id="syncLogout" type="button">로그아웃</button></div>
   <p style="margin:16px 0"><a href="slides.html?view">개별 열람 입장</a></p>
   <button id="syncClose" type="button">닫기</button>
 </dialog>
@@ -413,7 +429,7 @@ table.tbl td:first-child{color:var(--sub)}
   var qSlide = parseInt(params.get('slide'), 10);
   if (!isNaN(qSlide) && qSlide >= 1 && qSlide <= total) {
     idx = qSlide - 1;
-  } else {
+  } else if (!params.has('admin')) {
     var saved = parseInt(lsGet(STORAGE_KEY), 10);
     if (!isNaN(saved) && saved >= 0 && saved < total) idx = saved;
   }
